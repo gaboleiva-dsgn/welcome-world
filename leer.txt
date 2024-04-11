@@ -1,2 +1,2 @@
-Conexión a repositorio git
+Conexión al repositorio git
 git remote add origin https://github.com/gaboleiva-dsgn/servidor-welcome-word.git
