@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const fs = require("fs").promises
 
-const exphbs = require("handlebars");
+//const exphbs = require("handlebars");
 
 // Iniciar el servidor
 const PORT = 3000;
@@ -14,8 +14,8 @@ app.get("/", (req, res) => {
     res.sendFile(__dirname + "/index.html")
 })
 
-// Disponibilizar una ruta para devolver el contenido de un archivo cuyo nombre es declarado
-// en los parámetros de la consulta recibida
+// Disponibilizar una ruta para crear un archivo a partir de los parámetros de la consulta
+// recibida
 app.get("/crear", async (req, res) => {
     const {archivo, contenido} = req.query;
     console.log("Este es el archivo:", archivo);
@@ -33,7 +33,7 @@ app.get("/crear", async (req, res) => {
 app.get("/leer", async (req, res) => {
     const { archivo } = req.query;
     try {
-        const file = await fs.readFile(archivo);
+        await fs.readFile(archivo);
         res.sendFile(__dirname + "/" + archivo);
     } catch (error) {
         res.status(500).send(`No se puede mostrar el archivo ${archivo}`);
@@ -44,8 +44,6 @@ app.get("/leer", async (req, res) => {
 // declarado en los parámetros de la consulta recibida
 app.get("/renombrar", async (req, res) => {
     const {nombre, nuevoNombre} = req.query;
-
-    console.log(req.query);
     try {
         await fs.rename(nombre, nuevoNombre);
         res.send(`El archivo ${nombre} se ha renombrado como ${nuevoNombre}`);
@@ -62,6 +60,7 @@ app.get("/eliminar", async (req, res) => {
         await fs.unlink(archivo);
         res.send(`El archivo ${archivo} se ha eliminado con exito`);
     } catch (error) {
+        // Tipificar errores
         res.status(500).send(`El archivo ${archivo} no se ha eliminado`);
     }
 });
